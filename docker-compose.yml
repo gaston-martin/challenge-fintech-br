@@ -1,0 +1,40 @@
+services:
+  database:
+    image: mariadb
+    restart: always
+    container_name: database
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MARIADB_USER: fintech
+      MARIADB_PASSWORD: secret
+      MARIADB_DATABASE: fintech
+      LANG: C.UTF-8
+    volumes:
+      # - ./src/main/resources/sql/databases.sql:/docker-entrypoint-initdb.d/init.sql
+      - mariadb:/var/lib/mysql
+    ports:
+      - "33067:3306"
+    # This is needed to make sure database is ready before starting service
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized" ]
+      start_period: 1m
+      start_interval: 10s
+      interval: 1m
+      timeout: 5s
+      retries: 3
+
+  challenge-app:
+    image: "challenge-app:latest"
+    build:
+      context: .
+    container_name: challenge_app
+    depends_on:
+      database:
+        condition: service_healthy
+        restart: true
+    ports:
+      - "8080:8080"
+
+# Storage of database is done outside the disposable container so any data could survive container bounces
+volumes:
+  mariadb:
