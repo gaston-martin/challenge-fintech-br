@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,11 +46,13 @@ public class WalletService {
 
     @Transactional(propagation= Propagation.REQUIRED, readOnly=false)
     public Wallet insertNewWallet(Wallet newWallet){
-        WalletEntity savedWallet = saveWallet(mapper.modelToEntity(newWallet));
+        WalletEntity walletEntity = mapper.modelToEntity(newWallet);
+        walletEntity.setCreatedAt(LocalDateTime.now());
+        WalletEntity savedWallet = saveWallet(walletEntity);
         return mapper.entityToModel(savedWallet);
     }
 
-    public Optional<com.fintech.challenge.model.Wallet> findWalletByUserIdCountryAndCurrency(String userId, String country, String currency){
+    public Optional<Wallet> findWalletByUserIdCountryAndCurrency(String userId, String country, String currency){
         List<WalletEntity> found = repository.findByUserIdAndCountryAndCurrency(userId, country, currency);
         return switch (found.size()) {
             case 0 -> Optional.empty();

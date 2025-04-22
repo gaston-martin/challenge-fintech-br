@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="wallets", indexes = {
+@Table(name="wallet", indexes = {
         @Index(name="user_currency_country", columnList = "userId, currency, country", unique = true),
         @Index(name="user", columnList = "userId")
 })
@@ -20,7 +20,7 @@ public class WalletEntity {
 
     private String country;
 
-    private LocalDateTime createdAd;
+    private LocalDateTime createdAt;
 
     public Long getId() {
         return id;
@@ -38,12 +38,12 @@ public class WalletEntity {
         this.userId = userId;
     }
 
-    public LocalDateTime getCreatedAd() {
-        return createdAd;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreatedAd(LocalDateTime createdAd) {
-        this.createdAd = createdAd;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
 

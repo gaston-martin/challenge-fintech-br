@@ -4,33 +4,37 @@ import com.fintech.challenge.api.ApiWallet;
 import com.fintech.challenge.exceptions.client.InvalidUserIdException;
 import com.fintech.challenge.mappers.WalletMapper;
 import com.fintech.challenge.model.Wallet;
+import com.fintech.challenge.services.BalanceService;
 import com.fintech.challenge.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
 @RequestMapping(path = "/wallets")
 public class WalletController {
 
 
-    private WalletService walletService;
+    private final WalletService walletService;
+    private final BalanceService balanceService;
 
-    private WalletMapper mapper;
+    private final WalletMapper mapper;
 
     @Autowired
-    public WalletController(WalletService walletService, WalletMapper mapper) {
+    public WalletController(WalletService walletService, BalanceService balanceService, WalletMapper mapper) {
         this.walletService = walletService;
+        this.balanceService = balanceService;
         this.mapper = mapper;
     }
 
 
     @PostMapping
     @ResponseBody
-    public  CreatedWallet addNewWallet(@RequestBody ApiWallet wallet) {
+    @Transactional(rollbackFor = Throwable.class)
+    public  CreatedWallet createWallet(@RequestBody ApiWallet wallet) {
 
         // Validate given fields
         validateWalletData(wallet);
@@ -42,9 +46,10 @@ public class WalletController {
             // Behave idempotent
             return mapper.modelToApi(walletOptional.get());
         } else {
-            // Create a new Wallet
+            // Create a new Wallet along with its balance
             Wallet walletToCreate = mapper.apiToModel(wallet);
             Wallet walletInsertedAsModel = walletService.insertNewWallet(walletToCreate);
+            balanceService.createBalance(walletInsertedAsModel.id(), 0.0);
             return mapper.modelToApi(walletInsertedAsModel);
         }
     }

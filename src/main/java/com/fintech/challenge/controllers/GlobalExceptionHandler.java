@@ -3,6 +3,7 @@ package com.fintech.challenge.controllers;
 import com.fintech.challenge.api.ApiErrorResponse;
 import com.fintech.challenge.exceptions.ClientException;
 import com.fintech.challenge.exceptions.ServerException;
+import com.fintech.challenge.exceptions.client.WalletNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,5 +26,12 @@ public class GlobalExceptionHandler {
         String currentTimestamp = LocalDateTime.now().toString();
         String path = request.getRequestURI();
         return ResponseEntity.status(500).body(new ApiErrorResponse(currentTimestamp, ex.getMessage(), 500, path));
+    }
+
+    @ExceptionHandler(WalletNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleNotFoundException(Exception ex, HttpServletRequest request) {
+        String currentTimestamp = LocalDateTime.now().toString();
+        String path = request.getRequestURI();
+        return ResponseEntity.status(404).body(new ApiErrorResponse(currentTimestamp, ex.getMessage(), 404, path));
     }
 }

@@ -44,13 +44,13 @@ public class WalletMapper {
     
     public WalletEntity modelToEntity(@NonNull Wallet wallet ){
         // Entity has only a no-args constructor
-        WalletEntity entityWalletEntity = new WalletEntity();
+        WalletEntity walletEntity = new WalletEntity();
 
-        entityWalletEntity.setUserId(wallet.userId());
-        entityWalletEntity.setCurrency(wallet.currency().name());
-        entityWalletEntity.setCountry(wallet.country().name());
+        walletEntity.setUserId(wallet.userId());
+        walletEntity.setCurrency(wallet.currency().name());
+        walletEntity.setCountry(wallet.country().name());
 
-        return entityWalletEntity;
+        return walletEntity;
     }
 
 
