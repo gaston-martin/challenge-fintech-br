@@ -23,5 +23,10 @@
 hs_err_pid*
 replay_pid*
 
+# IntelliJ
+*.iml
+.idea/
+
 # Gradle build folder
 build/
+.gradle
