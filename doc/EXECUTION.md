@@ -39,7 +39,7 @@ See notes below for cleaning up the database.
 ### Reset Database
 
 In order to reset the database to an initial state, the docker volume named "mariadb" must be deleted. 
-To delete the volume, it must be out of use. So you need to stop and delete the database container first
+To delete the volume, it must be unused. So you need to stop and delete the database container first
 
 1. Identify and stop the database container
 ```
@@ -48,13 +48,14 @@ $ docker ps
 ➜  Documents docker ps
 CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                     NAMES
 91de2d9280ad   mariadb   "docker-entrypoint.s…"   6 seconds ago   Up 5 seconds   0.0.0.0:33067->3306/tcp   database
+
 $ docker stop database
 ```
 
 2. Prune all inactive containers
 ```
 $ docker container prune -f
-# You can also remove the specific container with issuing docker ps -a and then docker container rm ID  
+# This will remove all stopped containers. You can remove only the database container with issuing docker ps -a and then docker container rm ID  
 ```
 
 3. List the docker volumes
