@@ -2,11 +2,14 @@ package com.fintech.challenge.services;
 
 import com.fintech.challenge.entities.BalanceEntity;
 import com.fintech.challenge.entities.WalletEntity;
+import com.fintech.challenge.exceptions.client.ConcurrentModificationException;
+import com.fintech.challenge.exceptions.client.InsufficientSavingsException;
 import com.fintech.challenge.exceptions.client.WalletNotFoundException;
 import com.fintech.challenge.mappers.BalanceMapper;
 import com.fintech.challenge.model.Balance;
 import com.fintech.challenge.repositories.BalanceRepository;
 import com.fintech.challenge.repositories.WalletRepository;
+import jakarta.persistence.OptimisticLockException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +43,6 @@ public class BalanceService {
         balanceEntity.setWallet(wallet.get());
         balanceEntity.setBalance(initialBalance);
         balanceEntity.setLastMovementId(0L);
-        balanceEntity.setVersion(1L);
         balanceEntity.setUpdatedAt(LocalDateTime.now());
 
         balanceRepository.save(balanceEntity);
@@ -58,10 +60,24 @@ public class BalanceService {
             throw new WalletNotFoundException("Wallet with id " + id + " not found");
         }
         BalanceEntity balanceEntity = maybeBalance.get();
-        balanceEntity.setBalance(balanceEntity.getBalance() + amountToAdd);
+        // Here we hold the current balance and trust the optimistic locking mechanism (which uses version column)
+        // to avoid double spend or getting a negative balance because of undetected concurrent withdrawals.
+        Double currentAmount = balanceEntity.getBalance();
+        Double updatedAmount = currentAmount + amountToAdd;
+        // Only perform this check when subtracting money
+        if (amountToAdd < 0 && updatedAmount < 0 ) {
+            throw new InsufficientSavingsException(
+                    "Insufficient savings (" + currentAmount + ") for wallet with id " + id + " and amount " + amountToAdd);
+        }
+        balanceEntity.setBalance(updatedAmount);
         balanceEntity.setUpdatedAt(LocalDateTime.now());
-        balanceEntity.setVersion(balanceEntity.getVersion() + 1);
-        BalanceEntity updatedBalance = balanceRepository.save(balanceEntity);
+        BalanceEntity updatedBalance;
+        try {
+            updatedBalance = balanceRepository.save(balanceEntity);
+        } catch (OptimisticLockException e) {
+            throw new ConcurrentModificationException(
+                    "Concurrent modification detected for wallet with id " + id);
+        }
         return balanceMapper.entityToModel(updatedBalance);
     }
 }

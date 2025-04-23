@@ -93,12 +93,22 @@ to stress the system to its boundaries, to prove some assumptions, to leave some
 
 In this particular case, I had to sacrifice the tests due to the tight due dates given to solve the challenge. 
 
-### Version and other attributes of the database
+### Optimistic Locking of Balance
 
-I've put some attributes to the database layer, such as version and timestamps, mostly because I needed them at some point in time. 
-For instance, the version attribute of the balances, which is increased by 1 on each movement applied, would help to identify accounts 
-subject to high update rates, just by sorting the balance by version in descending order. Other attributes might come handy if for some reason
-the database is corrupted, and it's needed to do any restoration or consistency checks.
+The version attribute in the Balance annotated with @Version is used for optimistic locking.
+This avoids unwanted and unpredictable concurrent modifications of the same balance, which could produce a corrupted balanced amount.
+Optimistic locking has been selected over pessimistic locking, because it doesn't require further operations over the database engine,
+and it's simpler to use in the ORM.
+
+### Other attributes of the database
+
+I've also put some attributes to the database layer, such as update or creation timestamps, mostly because I needed them at some point in time. 
+The version attribute of the balances, apart from being useful for locking, is increased by 1 on each movement applied, 
+becoming handy to identify accounts subject to high update rates. By sorting the balances by version in descending order
+anyone could spot a balances with higher version numbers, which means they are updated at higher rates, thereby being a 
+strong candidate for detaching the update of the balance from the insertion of the movements. 
+Other attributes such as the lastMovementId might come handy if for some reason the database is corrupted, and it's needed
+to perform any restoration or consistency checks.
 
 # Time Tracking
 

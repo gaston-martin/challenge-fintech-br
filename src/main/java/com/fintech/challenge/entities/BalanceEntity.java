@@ -22,6 +22,7 @@ public class BalanceEntity {
 
     private Long lastMovementId;
 
+    @Version
     private Long version;
 
     public Long getId() {
