@@ -2,6 +2,7 @@ package com.fintech.challenge.controllers;
 
 import com.fintech.challenge.api.ApiBalance;
 import com.fintech.challenge.api.ApiDeposit;
+import com.fintech.challenge.api.ApiWithdrawal;
 import com.fintech.challenge.exceptions.client.CurrencyMismatchException;
 import com.fintech.challenge.exceptions.client.InvalidAmountException;
 import com.fintech.challenge.exceptions.client.WalletNotFoundException;
@@ -42,16 +43,14 @@ public class MovementController {
         this.balanceService = balanceService;
     }
 
-    // Deposit
-
     @ResponseBody
     @Transactional(rollbackFor = Throwable.class)
     @PostMapping(path="/wallets/{id}/deposit")
     public ApiBalance deposit(@PathVariable("id") Long walletId, @RequestBody ApiDeposit payload) {
         Wallet wallet = getWallet(walletId);
 
-        validateAmountPositive(payload.amount());
-        validateCurrency(payload.currency(), wallet.currency());
+        validateAmountBePositive(payload.amount());
+        validateCurrenciesMatch(payload.currency(), wallet.currency());
 
         Movement depositMovement = new Movement(
                 0L,
@@ -69,11 +68,40 @@ public class MovementController {
         return balanceMapper.modelToApi(updatedBalance);
     }
 
-
-
-
-    // /wallets/id/deposit POST   (
     // Withdraw
+    @ResponseBody
+    @Transactional(rollbackFor = Throwable.class)
+    @PostMapping(path="/wallets/{id}/withdraw")
+    public ApiBalance withdraw(@PathVariable("id") Long walletId, @RequestBody ApiWithdrawal payload) {
+        Wallet wallet = getWallet(walletId);
+
+        validateAmountBePositive(payload.amount());
+        validateCurrenciesMatch(payload.currency(), wallet.currency());
+
+        // Current savings before withdrawal are validated inside the balanceService.updateBalance method
+        // So that when the balance doesn't have enough money for the withdrawal the exception thrown will
+        // cause a rollback of the movement insertion. This could have been validated here before inserting the
+        // movement, hence duplicating the validation. As the balance could be negatively modified by other
+        // concurrent operation
+        //todo: Validar saldo
+
+        Movement withdrawMovement = new Movement(
+                0L,
+                MovementType.WITHDRAWAL,
+                wallet.id(),
+                payload.amount(),
+                LocalDateTime.now(),
+                payload.reference().orElse(""),
+                0L
+        );
+        // Insert Movement
+        Movement savedDeposit = movementService.insertMovement(withdrawMovement);
+        // Update Balance
+        Double amountToSubtract = payload.amount() * (-1);
+        Balance updatedBalance = balanceService.updateBalance(wallet.id(), amountToSubtract);
+        return balanceMapper.modelToApi(updatedBalance);
+    }
+
     // Transfer
     // Balance in time
 
@@ -85,13 +113,13 @@ public class MovementController {
         return maybeWallet.get();
     }
 
-    private void validateAmountPositive(Double amount) {
+    private void validateAmountBePositive(Double amount) {
         if (amount < 0) {
             throw new InvalidAmountException("Amount must be positive");
         }
     }
 
-    private void validateCurrency(String payloadCurrency, Currency walletCurrency) {
+    private void validateCurrenciesMatch(String payloadCurrency, Currency walletCurrency) {
         Currency fromPayload = Currency.valueOf(payloadCurrency);
         if(!fromPayload.equals(walletCurrency)){
             throw new CurrencyMismatchException(String.format("Currency %s doesn't match wallet currency (%s)", payloadCurrency, walletCurrency.name()));
