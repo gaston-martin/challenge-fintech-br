@@ -2,6 +2,7 @@ package com.fintech.challenge.controllers;
 
 import com.fintech.challenge.api.ApiBalance;
 import com.fintech.challenge.api.ApiDeposit;
+import com.fintech.challenge.api.ApiMoneyTransfer;
 import com.fintech.challenge.api.ApiWithdrawal;
 import com.fintech.challenge.exceptions.client.CurrencyMismatchException;
 import com.fintech.challenge.exceptions.client.InvalidAmountException;
@@ -58,8 +59,7 @@ public class MovementController {
                 wallet.id(),
                 payload.amount(),
                 LocalDateTime.now(),
-                payload.reference().orElse(""),
-                0L
+                payload.reference().orElse("")
         );
         // Insert Movement
         Movement savedDeposit = movementService.insertMovement(depositMovement);
@@ -68,7 +68,6 @@ public class MovementController {
         return balanceMapper.modelToApi(updatedBalance);
     }
 
-    // Withdraw
     @ResponseBody
     @Transactional(rollbackFor = Throwable.class)
     @PostMapping(path="/wallets/{id}/withdraw")
@@ -83,7 +82,6 @@ public class MovementController {
         // cause a rollback of the movement insertion. This could have been validated here before inserting the
         // movement, hence duplicating the validation. As the balance could be negatively modified by other
         // concurrent operation
-        //todo: Validar saldo
 
         Movement withdrawMovement = new Movement(
                 0L,
@@ -91,18 +89,58 @@ public class MovementController {
                 wallet.id(),
                 payload.amount(),
                 LocalDateTime.now(),
-                payload.reference().orElse(""),
-                0L
+                payload.reference().orElse("")
         );
+
         // Insert Movement
-        Movement savedDeposit = movementService.insertMovement(withdrawMovement);
+        movementService.insertMovement(withdrawMovement);
         // Update Balance
         Double amountToSubtract = payload.amount() * (-1);
         Balance updatedBalance = balanceService.updateBalance(wallet.id(), amountToSubtract);
         return balanceMapper.modelToApi(updatedBalance);
     }
 
-    // Transfer
+    @ResponseBody
+    @Transactional(rollbackFor = Throwable.class)
+    @PostMapping(path="/transfer")
+    public String transfer(@RequestBody ApiMoneyTransfer payload){
+
+        Wallet payerWallet = getWallet(payload.payerWalletId());
+        Wallet collectorWallet = getWallet(payload.collectorWalletId());
+        validateAmountBePositive(payload.amount());
+        validateTransferCurrenciesMatch(payerWallet.currency(), collectorWallet.currency());
+        validateCurrenciesMatch(payload.currency(), payerWallet.currency());
+
+        LocalDateTime timeStamp = LocalDateTime.now();
+
+        Movement payerMovement = new Movement(
+                0L,
+                MovementType.TRANSFER,
+                payerWallet.id(),
+                payload.amount() * (-1), // Subtract money
+                timeStamp,
+                payload.reference().orElse("")
+        );
+        Movement collectorMovement = new Movement(
+                0L,
+                MovementType.TRANSFER,
+                collectorWallet.id(),
+                payload.amount(),
+                timeStamp,
+                payload.reference().orElse("")
+        );
+
+        // Insert both movements
+        Movement savedPayerMovement = movementService.insertMovement(payerMovement);
+        Movement savedCollectorMovement = movementService.insertMovement(collectorMovement);
+
+        // Update balances
+        balanceService.updateBalance(payerWallet.id(), payerMovement.amount());
+        balanceService.updateBalance(collectorWallet.id(), collectorMovement.amount());
+
+        return "OK";
+    }
+
     // Balance in time
 
     private Wallet getWallet(Long walletId) {
@@ -126,4 +164,9 @@ public class MovementController {
         }
     }
 
+    private void validateTransferCurrenciesMatch(Currency leftCurrency, Currency rightCurrency) {
+        if(!leftCurrency.equals(rightCurrency)){
+            throw new CurrencyMismatchException(String.format("Payer currency (%s) doesn't match collector currency (%s)", leftCurrency.name(), rightCurrency.name()));
+        }
+    }
 }

@@ -24,8 +24,6 @@ public class MovementEntity {
 
     private String reference;
 
-    private Long relatedMovementId;
-
     public Long getId() {
         return id;
     }
@@ -72,13 +70,5 @@ public class MovementEntity {
 
     public void setReference(String reference) {
         this.reference = reference;
-    }
-
-    public Long getRelatedMovementId() {
-        return relatedMovementId;
-    }
-
-    public void setRelatedMovementId(Long relatedMovementId) {
-        this.relatedMovementId = relatedMovementId;
     }
 }

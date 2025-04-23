@@ -17,8 +17,7 @@ public class MovementMapper {
                movementEntity.getWallet().getId(),
                movementEntity.getAmount(),
                movementEntity.getCreatedAt(),
-               movementEntity.getReference(),
-               movementEntity.getRelatedMovementId()
+               movementEntity.getReference()
         );
     }
 
@@ -29,8 +28,6 @@ public class MovementMapper {
         movementEntity.setAmount(movement.amount());
         movementEntity.setCreatedAt(movement.createdAt());
         movementEntity.setReference(movement.reference());
-        movementEntity.setRelatedMovementId(movement.relatedMovementId());
-
         return movementEntity; // Won't have the WalletEntity set yet.
     }
 }
