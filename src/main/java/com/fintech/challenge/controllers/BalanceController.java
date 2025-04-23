@@ -31,16 +31,4 @@ public class BalanceController {
         }
         throw new WalletNotFoundException("Wallet with id " + walletId + " not found");
     }
-
-    /*     public List<CreatedWallet> getAllWallets(@RequestParam(required = false) String userId){
-        validateUserId(userId);
-        return walletService
-                .findAllWalletsByUserId(userId)
-                .stream()
-                .map(mapper::modelToApi)
-                .collect(Collectors.toList());
-    }
-*/
-
-
 }

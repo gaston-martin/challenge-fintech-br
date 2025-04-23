@@ -23,15 +23,4 @@ public class BalanceMapper {
                 balanceEntity.getWallet().getCurrency()
         );
     }
-
-    // todo Gaston: Revisar esto
-    public BalanceEntity modelToEntity(@NonNull Balance balance){
-        // Entity has only a no-args constructor
-        BalanceEntity balanceEntity = new BalanceEntity();
-
-        balanceEntity.setBalance(balance.amount());
-        balanceEntity.setId(balance.id());
-
-        return balanceEntity;
-    }
 }

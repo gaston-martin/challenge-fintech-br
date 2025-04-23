@@ -51,4 +51,17 @@ public class BalanceService {
                 .findById(id)
                 .map(balanceMapper::entityToModel);
     }
+
+    public Balance updateBalance(Long id, Double amountToAdd){
+        Optional<BalanceEntity> maybeBalance = balanceRepository.findById(id);
+        if(maybeBalance.isEmpty()){
+            throw new WalletNotFoundException("Wallet with id " + id + " not found");
+        }
+        BalanceEntity balanceEntity = maybeBalance.get();
+        balanceEntity.setBalance(balanceEntity.getBalance() + amountToAdd);
+        balanceEntity.setUpdatedAt(LocalDateTime.now());
+        balanceEntity.setVersion(balanceEntity.getVersion() + 1);
+        BalanceEntity updatedBalance = balanceRepository.save(balanceEntity);
+        return balanceMapper.entityToModel(updatedBalance);
+    }
 }

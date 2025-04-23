@@ -40,10 +40,6 @@ public class WalletService {
                 .collect(Collectors.toList());
     }
 
-    private WalletEntity saveWallet(WalletEntity walletEntity){
-        return repository.save(walletEntity);
-    }
-
     @Transactional(propagation= Propagation.REQUIRED, readOnly=false)
     public Wallet insertNewWallet(Wallet newWallet){
         WalletEntity walletEntity = mapper.modelToEntity(newWallet);
@@ -59,5 +55,9 @@ public class WalletService {
             case 1 -> Optional.of(mapper.entityToModel(found.getFirst()));
             default -> throw new TooManyResultsException("Found more than one wallet for the given parameters");
         };
+    }
+
+    private WalletEntity saveWallet(WalletEntity walletEntity){
+        return repository.save(walletEntity);
     }
 }
