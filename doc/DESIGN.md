@@ -28,6 +28,12 @@ and it's very well known by almost everyone, resulting in an easier to understan
 
 ## Other limitations, choices and tradeoffs
 
+### Role based access control 
+
+Due to the time restriction, and considering it has not been specified as a non-functional requirement, no RBAC mechanism have been
+implemented in this project. A Basic authentication and authorization schema can be seen in a [former project that I've done](https://github.com/gaston-martin/challenge-fintech-cl)
+In that project, RBAC was implemented using a SESSION ID technique instead of a JWT.
+
 ### Privacy of Data
 
 As per GDPR and similar laws around the world, I've tried to keep out any data which may be labelled as personal information,
@@ -112,7 +118,6 @@ strong candidate for detaching the update of the balance from the insertion of t
 Other attributes such as the lastMovementId might come handy if for some reason the database is corrupted, and it's needed
 to perform any restoration or consistency checks.
 
-# Time Tracking
+### Logging requests
 
-TBD...
-
+A simple LoggingFilter has been added to log URI, method and payload of all requests. 
