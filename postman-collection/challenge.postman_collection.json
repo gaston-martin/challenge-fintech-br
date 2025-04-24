@@ -1,0 +1,1562 @@
+{
+	"info": {
+		"_postman_id": "c8090bdb-ffe7-4a27-be19-b78e032d565d",
+		"name": "Challenge Fintech BR",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "150432"
+	},
+	"item": [
+		{
+			"name": "Health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body(\"OK\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/health",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Wallet (Valid) ARS - user1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Right id\", function () {",
+							"    pm.expect(jsonData.id).to.eql(1);",
+							"});",
+							"",
+							"pm.test(\"Right userId\", function () {",
+							"    pm.expect(jsonData.userId).to.eql(\"someUser\");",
+							"});",
+							"",
+							"pm.test(\"Right currency\", function () {",
+							"    pm.expect(jsonData.currency).to.eql(\"ARS\");",
+							"});",
+							"",
+							"pm.test(\"Right country\", function () {",
+							"    pm.expect(jsonData.country).to.eql(\"ARGENTINA\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"someUser\",\n    \"country\": \"ARGENTINA\",\n    \"currency\": \"ARS\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/wallets",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Wallet (Valid) ARS - user2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Right id\", function () {",
+							"    pm.expect(jsonData.id).to.eql(2);",
+							"});",
+							"",
+							"pm.test(\"Right userId\", function () {",
+							"    pm.expect(jsonData.userId).to.eql(\"someOtherUser\");",
+							"});",
+							"",
+							"pm.test(\"Right currency\", function () {",
+							"    pm.expect(jsonData.currency).to.eql(\"ARS\");",
+							"});",
+							"",
+							"pm.test(\"Right country\", function () {",
+							"    pm.expect(jsonData.country).to.eql(\"ARGENTINA\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"someOtherUser\",\n    \"country\": \"ARGENTINA\",\n    \"currency\": \"ARS\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/wallets",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Wallet (Valid) USD - user2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Right id\", function () {",
+							"    pm.expect(jsonData.id).to.eql(3);",
+							"});",
+							"",
+							"pm.test(\"Right userId\", function () {",
+							"    pm.expect(jsonData.userId).to.eql(\"someOtherUser\");",
+							"});",
+							"",
+							"pm.test(\"Right currency\", function () {",
+							"    pm.expect(jsonData.currency).to.eql(\"USD\");",
+							"});",
+							"",
+							"pm.test(\"Right country\", function () {",
+							"    pm.expect(jsonData.country).to.eql(\"ARGENTINA\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"someOtherUser\",\n    \"country\": \"ARGENTINA\",\n    \"currency\": \"USD\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/wallets",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Wallet (Invalid, missing userid)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"has timeStamp\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"timestamp\");",
+							"});",
+							"",
+							"pm.test(\"Right error\", function () {",
+							"    pm.expect(jsonData.error).to.eql(\"Invalid userId: null\");",
+							"});",
+							"",
+							"pm.test(\"Right status\", function () {",
+							"    pm.expect(jsonData.status).to.eql(400);",
+							"});",
+							"",
+							"pm.test(\"Right path\", function () {",
+							"    pm.expect(jsonData.path).to.eql(\"/wallets\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": null,\n    \"country\": \"ARGENTINA\",\n    \"currency\": \"ARS\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/wallets",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Wallet (Invalid, empty userId)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"has timeStamp\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"timestamp\");",
+							"});",
+							"",
+							"pm.test(\"Right error\", function () {",
+							"    pm.expect(jsonData.error).to.eql(\"Invalid userId: \");",
+							"});",
+							"",
+							"pm.test(\"Right status\", function () {",
+							"    pm.expect(jsonData.status).to.eql(400);",
+							"});",
+							"",
+							"pm.test(\"Right path\", function () {",
+							"    pm.expect(jsonData.path).to.eql(\"/wallets\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"\",\n    \"country\": \"ARGENTINA\",\n    \"currency\": \"ARS\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/wallets",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Wallet (Invaliid, blank userId)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"has timeStamp\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"timestamp\");",
+							"});",
+							"",
+							"pm.test(\"Right error\", function () {",
+							"    pm.expect(jsonData.error).to.eql(\"Invalid userId:  \");",
+							"});",
+							"",
+							"pm.test(\"Right status\", function () {",
+							"    pm.expect(jsonData.status).to.eql(400);",
+							"});",
+							"",
+							"pm.test(\"Right path\", function () {",
+							"    pm.expect(jsonData.path).to.eql(\"/wallets\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \" \",\n    \"country\": \"ARGENTINA\",\n    \"currency\": \"ARS\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/wallets",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Wallet (Invalid Currency)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"has timeStamp\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"timestamp\");",
+							"});",
+							"",
+							"pm.test(\"Right error\", function () {",
+							"    pm.expect(jsonData.error).to.eql(\"Invalid currency: PESO\");",
+							"});",
+							"",
+							"pm.test(\"Right status\", function () {",
+							"    pm.expect(jsonData.status).to.eql(400);",
+							"});",
+							"",
+							"pm.test(\"Right path\", function () {",
+							"    pm.expect(jsonData.path).to.eql(\"/wallets\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"Something\",\n    \"country\": \"ARGENTINA\",\n    \"currency\": \"PESO\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/wallets",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Wallet (Invalid Country)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"has timeStamp\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"timestamp\");",
+							"});",
+							"",
+							"pm.test(\"Right error\", function () {",
+							"    pm.expect(jsonData.error).to.eql(\"Invalid country: ARGENTIN\");",
+							"});",
+							"",
+							"pm.test(\"Right status\", function () {",
+							"    pm.expect(jsonData.status).to.eql(400);",
+							"});",
+							"",
+							"pm.test(\"Right path\", function () {",
+							"    pm.expect(jsonData.path).to.eql(\"/wallets\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"Something\",\n    \"country\": \"ARGENTIN\",\n    \"currency\": \"ARS\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/wallets",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Wallet for a user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is a JSON array\", function () {",
+							"    pm.expect(pm.response.json()).to.be.an('array');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response is a JSON array with 1 element\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('array').that.has.lengthOf(1);",
+							"});",
+							"// Check if the response has 1 element with specific keys",
+							"pm.test(\"Response has 1 element with keys id, userId, currency, and country\", function () {",
+							"    pm.response.json().forEach(function(wallet) {",
+							"        pm.expect(wallet).to.have.property('id');",
+							"        pm.expect(wallet).to.have.property('userId');",
+							"        pm.expect(wallet).to.have.property('currency');",
+							"        pm.expect(wallet).to.have.property('country');",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/wallets?userId=someUser",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "someUser"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Wallet for a user (missing userId)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"has timeStamp\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"timestamp\");",
+							"});",
+							"",
+							"pm.test(\"Right error\", function () {",
+							"    pm.expect(jsonData.error).to.eql(\"Missing userId\");",
+							"});",
+							"",
+							"pm.test(\"Right status\", function () {",
+							"    pm.expect(jsonData.status).to.eql(400);",
+							"});",
+							"",
+							"pm.test(\"Right path\", function () {",
+							"    pm.expect(jsonData.path).to.eql(\"/wallets\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/wallets",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Balance for a Wallet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Right id\", function () {",
+							"    pm.expect(jsonData.id).to.eql(1);",
+							"});",
+							"",
+							"pm.test(\"Right currency\", function () {",
+							"    pm.expect(jsonData.currency).to.eql(\"ARS\");",
+							"});",
+							"",
+							"pm.test(\"Right balance\", function () {",
+							"    pm.expect(jsonData.balance).to.be.greaterThanOrEqual(0);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/wallets/1/balance",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets",
+						"1",
+						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Balance for a Wallet At Some time Before making deposit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Right id\", function () {",
+							"    pm.expect(jsonData.id).to.eql(1);",
+							"});",
+							"",
+							"pm.test(\"Right currency\", function () {",
+							"    pm.expect(jsonData.currency).to.eql(\"ARS\");",
+							"});",
+							"",
+							"pm.test(\"Right balance\", function () {",
+							"    pm.expect(jsonData.balance).to.eql(0);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/wallets/1/balance/at/2099-12-31T23:59:59",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets",
+						"1",
+						"balance",
+						"at",
+						"2099-12-31T23:59:59"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deposit money into Balance",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Right id\", function () {",
+							"    pm.expect(jsonData.id).to.eql(1);",
+							"});",
+							"",
+							"pm.test(\"Right currency\", function () {",
+							"    pm.expect(jsonData.currency).to.eql(\"ARS\");",
+							"});",
+							"",
+							"pm.test(\"Right balance\", function () {",
+							"    pm.expect(jsonData.balance).to.be.greaterThan(0);",
+							"});",
+							"",
+							"var moment = require('moment');",
+							"var ISO_8601_OFFSET = 'YYYY-MM-DDTHH:mm:ss.SSS';",
+							"var beforeDate = moment().subtract(1, 'minutes').format(ISO_8601_OFFSET);",
+							"var afterDate = moment().add(1, 'minutes').format(ISO_8601_OFFSET);",
+							"",
+							"pm.globals.set(\"beforeTime\", beforeDate);",
+							"pm.globals.set(\"afterTime\", afterDate);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 100,\n    \"currency\": \"ARS\",\n    \"reference\": \"Deposit from ACH 12345\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/wallets/1/deposit",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets",
+						"1",
+						"deposit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Balance for a Wallet At Some time",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Right id\", function () {",
+							"    pm.expect(jsonData.id).to.eql(1);",
+							"});",
+							"",
+							"pm.test(\"Right currency\", function () {",
+							"    pm.expect(jsonData.currency).to.eql(\"ARS\");",
+							"});",
+							"",
+							"pm.test(\"Right balance\", function () {",
+							"    pm.expect(jsonData.balance).to.be.greaterThanOrEqual(0);",
+							"});",
+							"",
+							"var borrowedBalance = jsonData.balance;",
+							"pm.globals.set(\"borrowedBalance\", borrowedBalance);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/wallets/1/balance/at/{{beforeTime}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets",
+						"1",
+						"balance",
+						"at",
+						"{{beforeTime}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Balance for a Wallet At Some time Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Right id\", function () {",
+							"    pm.expect(jsonData.id).to.eql(1);",
+							"});",
+							"",
+							"pm.test(\"Right currency\", function () {",
+							"    pm.expect(jsonData.currency).to.eql(\"ARS\");",
+							"});",
+							"",
+							"pm.test(\"Right balance\", function () {",
+							"    pm.expect(jsonData.balance).to.be.greaterThanOrEqual(0);",
+							"});",
+							"",
+							"var borrowedBalance = jsonData.balance;",
+							"",
+							"pm.test(\"Balance increased\", function() {",
+							"    pm.expect(borrowedBalance).to.be.greaterThan(pm.globals.get(\"borrowedBalance\")); // Assuming balance should be greater than 0 after borrowing",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/wallets/1/balance/at/{{afterTime}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets",
+						"1",
+						"balance",
+						"at",
+						"{{afterTime}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deposit money into Balance (wrong currency)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"has timeStamp\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"timestamp\");",
+							"});",
+							"",
+							"pm.test(\"Right error\", function () {",
+							"    pm.expect(jsonData.error).to.eql(\"Currency COP doesn't match wallet currency (ARS)\");",
+							"});",
+							"",
+							"pm.test(\"Right status\", function () {",
+							"    pm.expect(jsonData.status).to.eql(400);",
+							"});",
+							"",
+							"pm.test(\"Right path\", function () {",
+							"    pm.expect(jsonData.path).to.eql(\"/wallets/1/deposit\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 100.1,\n    \"currency\": \"COP\",\n    \"reference\": \"Deposit from ACH 12345\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/wallets/1/deposit",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets",
+						"1",
+						"deposit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deposit money into Balance (negative amount)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"has timeStamp\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"timestamp\");",
+							"});",
+							"",
+							"pm.test(\"Right error\", function () {",
+							"    pm.expect(jsonData.error).to.eql(\"Amount must be positive\");",
+							"});",
+							"",
+							"pm.test(\"Right status\", function () {",
+							"    pm.expect(jsonData.status).to.eql(400);",
+							"});",
+							"",
+							"pm.test(\"Right path\", function () {",
+							"    pm.expect(jsonData.path).to.eql(\"/wallets/1/deposit\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": -1,\n    \"currency\": \"ARS\",\n    \"reference\": \"Deposit from ACH 12345\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/wallets/1/deposit",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets",
+						"1",
+						"deposit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deposit money into Balance Without Reference",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Right id\", function () {",
+							"    pm.expect(jsonData.id).to.eql(1);",
+							"});",
+							"",
+							"pm.test(\"Right currency\", function () {",
+							"    pm.expect(jsonData.currency).to.eql(\"ARS\");",
+							"});",
+							"",
+							"pm.test(\"Right balance\", function () {",
+							"    pm.expect(jsonData.balance).to.be.greaterThan(0);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 100.0,\n    \"currency\": \"ARS\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/wallets/1/deposit",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets",
+						"1",
+						"deposit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Withdraw money from Balance",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Right id\", function () {",
+							"    pm.expect(jsonData.id).to.eql(1);",
+							"});",
+							"",
+							"pm.test(\"Right currency\", function () {",
+							"    pm.expect(jsonData.currency).to.eql(\"ARS\");",
+							"});",
+							"",
+							"pm.test(\"Right type of balance\", function () {",
+							"    pm.expect(jsonData.balance).to.be.a(\"number\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 5,\n    \"currency\": \"ARS\",\n    \"reference\": \"withdraw to account 123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/wallets/1/withdraw",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets",
+						"1",
+						"withdraw"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer Money",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body(\"OK\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 10,\n    \"currency\": \"ARS\",\n    \"payerWalletId\": 1,\n    \"collectorWalletId\": 2,\n    \"reference\": \"Money transfer 123456\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/transfer",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer Money (without reference)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body(\"OK\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 10,\n    \"currency\": \"ARS\",\n    \"payerWalletId\": 1,\n    \"collectorWalletId\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/transfer",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer Money (insufficient money)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"has timeStamp\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"timestamp\");",
+							"});",
+							"",
+							"pm.test(\"Right error\", function () {",
+							"    pm.expect(jsonData.error).to.contain(\"Insufficient savings\");",
+							"    pm.expect(jsonData.error).to.contain(\"for wallet with id\");",
+							"",
+							"});",
+							"",
+							"pm.test(\"Right status\", function () {",
+							"    pm.expect(jsonData.status).to.eql(400);",
+							"});",
+							"",
+							"pm.test(\"Right path\", function () {",
+							"    pm.expect(jsonData.path).to.eql(\"/transfer\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 10000,\n    \"currency\": \"ARS\",\n    \"payerWalletId\": 1,\n    \"collectorWalletId\": 2,\n    \"reference\": \"Money transfer 234567\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/transfer",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer Money invalid payer id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"has timeStamp\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"timestamp\");",
+							"});",
+							"",
+							"pm.test(\"Right error\", function () {",
+							"    pm.expect(jsonData.error).to.eql(\"Wallet with id 1111 not found\");",
+							"});",
+							"",
+							"pm.test(\"Right status\", function () {",
+							"    pm.expect(jsonData.status).to.eql(404);",
+							"});",
+							"",
+							"pm.test(\"Right path\", function () {",
+							"    pm.expect(jsonData.path).to.eql(\"/transfer\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 10,\n    \"currency\": \"ARS\",\n    \"payerWalletId\": 1111,\n    \"collectorWalletId\": 2,\n    \"reference\": \"Money transfer 123457\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/transfer",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer Money invalid collector id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"has timeStamp\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"timestamp\");",
+							"});",
+							"",
+							"pm.test(\"Right error\", function () {",
+							"    pm.expect(jsonData.error).to.eql(\"Wallet with id 22222 not found\");",
+							"});",
+							"",
+							"pm.test(\"Right status\", function () {",
+							"    pm.expect(jsonData.status).to.eql(404);",
+							"});",
+							"",
+							"pm.test(\"Right path\", function () {",
+							"    pm.expect(jsonData.path).to.eql(\"/transfer\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 10,\n    \"currency\": \"ARS\",\n    \"payerWalletId\": 1,\n    \"collectorWalletId\": 22222,\n    \"reference\": \"Money transfer 123457\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/transfer",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer Money Currency mismatch",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"has timeStamp\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"timestamp\");",
+							"});",
+							"",
+							"pm.test(\"Right error\", function () {",
+							"    pm.expect(jsonData.error).to.eql(\"Currency USD doesn't match wallet currency (ARS)\");",
+							"});",
+							"",
+							"pm.test(\"Right status\", function () {",
+							"    pm.expect(jsonData.status).to.eql(400);",
+							"});",
+							"",
+							"pm.test(\"Right path\", function () {",
+							"    pm.expect(jsonData.path).to.eql(\"/transfer\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 10,\n    \"currency\": \"USD\",\n    \"payerWalletId\": 1,\n    \"collectorWalletId\": 2,\n    \"reference\": \"Money transfer 123457\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/transfer",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer Money Currency mismatch (bis)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"has timeStamp\", function () {",
+							"    pm.expect(jsonData).to.have.property(\"timestamp\");",
+							"});",
+							"",
+							"pm.test(\"Right error\", function () {",
+							"    pm.expect(jsonData.error).to.eql(\"Payer currency (ARS) doesn't match collector currency (USD)\");",
+							"});",
+							"",
+							"pm.test(\"Right status\", function () {",
+							"    pm.expect(jsonData.status).to.eql(400);",
+							"});",
+							"",
+							"pm.test(\"Right path\", function () {",
+							"    pm.expect(jsonData.path).to.eql(\"/transfer\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 10,\n    \"currency\": \"ARS\",\n    \"payerWalletId\": 1,\n    \"collectorWalletId\": 3,\n    \"reference\": \"Money transfer 123457\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/transfer",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
