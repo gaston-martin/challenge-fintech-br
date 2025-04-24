@@ -10,6 +10,9 @@ Challenge project in Java for a fintech company
 ## Instructions to run the service
 [How to run the service](doc/EXECUTION.md)
 
+## Sample requests
+[Sample requests for all endpoints](doc/REQUESTS.md)
+
 ## Author
 
 | Name           | Email             |
