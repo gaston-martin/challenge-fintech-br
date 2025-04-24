@@ -6,9 +6,9 @@ import com.fintech.challenge.api.ApiMoneyTransfer;
 import com.fintech.challenge.api.ApiWithdrawal;
 import com.fintech.challenge.exceptions.client.CurrencyMismatchException;
 import com.fintech.challenge.exceptions.client.InvalidAmountException;
+import com.fintech.challenge.exceptions.client.InvalidTimeException;
 import com.fintech.challenge.exceptions.client.WalletNotFoundException;
 import com.fintech.challenge.mappers.BalanceMapper;
-import com.fintech.challenge.mappers.DepositMapper;
 import com.fintech.challenge.model.Balance;
 import com.fintech.challenge.model.Movement;
 import com.fintech.challenge.model.Wallet;
@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 @RestController
@@ -30,16 +31,12 @@ public class MovementController {
     private final MovementService movementService;
     private final WalletService walletService;
     private final BalanceService balanceService;
-    private final BalanceController balanceController;
     private final BalanceMapper balanceMapper;
-    private final DepositMapper depositMapper;
 
     @Autowired
-    public MovementController(MovementService movementService, WalletService walletService, BalanceService balanceService, BalanceController balanceController, BalanceMapper balanceMapper, DepositMapper depositMapper) {
+    public MovementController(MovementService movementService, WalletService walletService, BalanceService balanceService, BalanceMapper balanceMapper) {
         this.movementService = movementService;
-        this.balanceController = balanceController;
         this.balanceMapper = balanceMapper;
-        this.depositMapper = depositMapper;
         this.walletService = walletService;
         this.balanceService = balanceService;
     }
@@ -141,7 +138,27 @@ public class MovementController {
         return "OK";
     }
 
-    // Balance in time
+    @ResponseBody
+    @GetMapping(path="/wallets/{id}/balance/at/{time}")
+    public ApiBalance getBalanceAtTime(@PathVariable("id") Long walletId, @PathVariable("time") String timeAsString) {
+        // Validate if wallet exists
+        Wallet wallet = getWallet(walletId);
+        LocalDateTime time;
+        try {
+            time = LocalDateTime.parse(timeAsString);
+        } catch (DateTimeParseException e){
+            throw new InvalidTimeException(
+                    String.format("Invalid time format (%s). Expected format: yyyy-MM-dd'T'HH:mm:ss.SSS", timeAsString));
+        }
+
+        Double amount = movementService.getBalanceAtTime(walletId, time);
+        return new ApiBalance(
+                wallet.id(),
+                amount,
+                wallet.currency().name()
+        );
+    }
+
 
     private Wallet getWallet(Long walletId) {
         Optional<Wallet> maybeWallet = walletService.findWalletById(walletId);

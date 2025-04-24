@@ -10,6 +10,7 @@ import com.fintech.challenge.repositories.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -37,6 +38,10 @@ public class MovementService {
         MovementEntity savedEntity = movementRepository.save(movementEntity);
 
         return movementMapper.entityToModel(savedEntity);
+    }
+
+    public Double getBalanceAtTime(Long walletId, LocalDateTime time){
+        return movementRepository.findSumByWalletIdAndPointInTime(walletId, time);
     }
 
 

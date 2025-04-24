@@ -13,7 +13,7 @@ public class MovementEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "wallet_id")
+    @JoinColumn(name = "walletId")
     private WalletEntity wallet;
 
     private String type;

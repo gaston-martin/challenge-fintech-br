@@ -48,6 +48,8 @@ As the entities (and rows in the database) for wallets and balances are related 
 There is a specific way of accomplishing that by using the @MapsId annotation. By that approach, the attribute annotated will be replaced by
 the attribute annotated with @Id. In this way the PK is also a foreign key at the same time. This is a performance optimization.
 
+See [article](https://vladmihalcea.com/the-best-way-to-map-a-onetoone-relationship-with-jpa-and-hibernate/) for a deep explanation about this technique.
+
 Both the wallet and the balance could have been the same entity and table with attributes merged together. I wanted to be able 
 to tell them apart so that it would be possible to query the wallets of a user without getting its balance, and vice versa.
 
